@@ -1,69 +1,71 @@
-# React + TypeScript + Vite
+# Edible Oil Tonnage Calculator
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A web application that calculates the tonnage (MT) of edible oil based on user-submitted volume, density, and temperature. It retrieves the Volume Correction Factor (VCF) from a lookup table and stores the calculation history.
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
+## Formula
 
 If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+```Tonnage (MT) = (Volume × Density × VCF) / 1000
+```
+- Volume in litres
+- Density in kg/m³
+- VCF is retrieved from a table based on rounded density and temperature
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+## Tech Stack
+- Frontend: React (with TailwindCSS)
+- Backend: Node.js + Express (or any Node server)
+- ORM: Prisma
+- Database: MySQL
+- Validation: Zod + React Hook Form
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Installation
+```
+ git clone https://github.com/your-username/edible-oil-calculator.git
+ cd edible-oil-calculator
+ npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Prisma Setup
+ Initialize Prisma (if not already done)
+ ```
+npx prisma init
+```
+### update database credentials in .env
+```
+DATABASE_URL="mysql://username:password@localhost:3306/your_db_name"
+```
+run prisma Prisma models Inside prisma/schema.prisma
+```
+npx prisma migrate dev --name init
+```
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## setup sample data
+```
+mysql -u root -p your_db_name < vcftable.sql
+```
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 🚀 Running the App
+```
+npm run dev
+```
+
+## Features
+- ✅ Validates user inputs using Zod and React Hook Form
+- ✅ Rounds inputs to nearest allowed VCF values (0.5 kg/m³ and 0.25 °C)
+- ✅ Stores each calculation in the database
+- ✅ Displays VCF and tonnage after calculation
+- ✅ Historical log with sort & search (optional)
+
+## Project Structure
+```
+.
+├── src/                # React frontend
+│   └── ...
+├  prisma/   # Prisma backend
+│       └── schema.prisma
+│   └── ...
+└── vcftable.sql           # VCF sample data to import
+
 ```
