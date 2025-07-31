@@ -13,3 +13,21 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+model vcftable {
+  id         Int     @id @default(autoincrement())
+  density    Float   
+  temperature Float  
+  vcf        Float
+  class  String
+  vcf2  String
+}
+model oil_tonnages {
+  id          Int     @id @default(autoincrement())
+  volume      Float
+  density     Float
+  temperature Float
+  vcf         Float
+  tonnage     Float
+  createdAt   DateTime @default(now())
+}
