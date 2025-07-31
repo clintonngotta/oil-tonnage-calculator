@@ -48,6 +48,7 @@ mysql -u root -p your_db_name < vcftable.sql
 
 ## 🚀 Running the App
 ```
+node server.js
 npm run dev
 ```
 
